@@ -1,10 +1,21 @@
 import flet as ft
+import requests
+
+API_URL = "http://127.0.0.1:8000/users"
 
 class UserView:
     def __init__(self, page):
         self.page = page
 
     def show_register(self, register):
+        def register(e):
+            user_data = {
+                "username": username.value,
+                "email": email.value,
+                "password": password.value,
+            }
+            requests.post(API_URL, json=user_data)
+            
         username = ft.TextField(
             hint_text='Nome de Usuário'
         )
