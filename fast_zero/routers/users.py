@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from fast_zero.security import get_password_hash
+from fast_zero.security import get_password_hash, get_current_user
 from fast_zero.database import get_session
 from fast_zero.models import User
 from fast_zero.schemas import UserPublic, UserSchema
@@ -13,13 +13,14 @@ from fast_zero.routers.views.users_view import UserView
 router = APIRouter(prefix='/users', tags=['users'])
 
 TypeSession = Annotated[Session, Depends(get_session)]
+TypeCurrentUser = Annotated[User, Depends(get_current_user)]
 
 class UserController:
     def __init__(self, page):
         self.view = UserView(page)
 
     @router.post('/', status_code=HTTPStatus.CREATED, response_model=UserPublic)
-    def create_user(user: UserSchema, session: TypeSession):
+    def create_user(user: UserSchema, session: TypeSession, current_user: TypeCurrentUser):
         db_user = session.scalar(
             select(User).where(
                 (User.username == user.username) or

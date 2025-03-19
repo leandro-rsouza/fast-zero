@@ -35,11 +35,7 @@ def verify_password(plain_password: str, hashed: str):
 def create_access_token(data: dict):
     to_encode = data.copy()
 
-    expire = datetime.now(
-        tz=ZoneInfo('UTC') + timedelta(
-            minutes=settings.ACCESS_TOKEN_EXPIRES_MINUTES
-        )
-    )
+    expire = datetime.now(tz=ZoneInfo('UTC')) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRES_MINUTES)
 
     to_encode.update({'exp': expire})
 
@@ -47,7 +43,7 @@ def create_access_token(data: dict):
     
     return encoded_jwt
 
-def currente_user(session: TypeSession, token: TypeOAuth2):
+def get_current_user(session: TypeSession, token: TypeOAuth2):
     
     credentials_exception = HTTPException(
         status_code=HTTPStatus.UNAUTHORIZED,
