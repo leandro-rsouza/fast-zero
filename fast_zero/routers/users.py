@@ -19,7 +19,7 @@ class UserController:
     def __init__(self, page):
         self.view = UserView(page)
 
-    @router.post('/', status_code=HTTPStatus.CREATED, response_model=UserPublic)
+    @router.post('/create', status_code=HTTPStatus.CREATED, response_model=UserPublic)
     def create_user(user: UserSchema, session: TypeSession, current_user: TypeCurrentUser):
         db_user = session.scalar(
             select(User).where(
@@ -32,7 +32,7 @@ class UserController:
             if db_user.username == user.username:
                 raise HTTPException(
                     status_code=HTTPStatus.BAD_REQUEST,
-                    datail='Username already exists'
+                    detail='Username already exists'
                 )
             elif db_user.email == user.email:
                 raise HTTPException(
