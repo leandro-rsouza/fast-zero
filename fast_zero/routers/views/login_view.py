@@ -13,7 +13,18 @@ class LoginView:
                 "username": email.value,
                 "password": password.value,
             }
-            requests.post(API_URL, data=user_data)
+            response = requests.post(API_URL, data=user_data)
+
+            if response.status_code == 200:
+                token = response.json().get("access_token")
+
+                self.page.session.set("access_token", token)
+
+                print("Credenciais Válidas")
+                self.page.go("/users/")
+            else:
+                print("Credenciais Inválidas") 
+                self.page.update()
 
         email = ft.TextField(
             hint_text='Email'
