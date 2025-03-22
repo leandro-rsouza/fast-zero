@@ -19,8 +19,8 @@ class UserController:
     def __init__(self, page):
         self.view = UserView(page)
 
-    @router.post('/create', status_code=HTTPStatus.CREATED, response_model=UserPublic)
-    def create_user(user: UserSchema, session: TypeSession, current_user: TypeCurrentUser):
+    @router.post('/create/{user_id}', status_code=HTTPStatus.CREATED, response_model=UserPublic)
+    def create_user(user_id: int, user: UserSchema, session: TypeSession, current_user: TypeCurrentUser):
         db_user = session.scalar(
             select(User).where(
                 (User.username == user.username) or

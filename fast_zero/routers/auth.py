@@ -36,7 +36,7 @@ class AuthController:
         
         access_token = create_access_token(data={'sub': user.email})
 
-        return {'access_token': access_token, 'token_type': 'Bearer'}
+        return {'user_id': user.id, 'access_token': access_token, 'token_type': 'Bearer'}
     
     def login(self):
         self.view.show_login(self.login_for_access_token)

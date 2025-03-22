@@ -16,9 +16,10 @@ class LoginView:
             response = requests.post(API_URL, data=user_data)
 
             if response.status_code == 200:
-                token = response.json().get("access_token")
+                # token = response.json().get("access_token")
+                user = response.json().get("user_id")
 
-                self.page.session.set("access_token", token)
+                self.page.session.set("user_id", user)
 
                 print("Credenciais Válidas")
                 self.page.go("/users/")
