@@ -1,8 +1,6 @@
 import flet as ft
 import requests
 
-API_URL = "http://127.0.0.1:8000/auth/token"
-
 class LoginView:
     def __init__(self, page):
         self.page = page
@@ -13,12 +11,13 @@ class LoginView:
                 "username": email.value,
                 "password": password.value,
             }
-            response = requests.post(API_URL, data=user_data)
+            response = requests.post("http://127.0.0.1:8000/auth/token", data=user_data)
 
             if response.status_code == 200:
-                # token = response.json().get("access_token")
+                token = response.json().get("access_token")
                 user = response.json().get("user_id")
 
+                self.page.session.set("access_token", token)
                 self.page.session.set("user_id", user)
 
                 print("Credenciais Válidas")

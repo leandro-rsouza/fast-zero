@@ -4,8 +4,9 @@ import requests
 class UserView:
     def __init__(self, page):
         self.page = page
-        self.user = self.page.session.get("user_id")
-        
+        self.user_id = self.page.session.get("user_id")
+        self.access_token = self.page.session.get("access_token")
+
     def show_register(self, register):
         def register(e):
             user_data = {
@@ -13,10 +14,13 @@ class UserView:
                 "email": email.value,
                 "password": password.value,
             }
-            requests.post(f"http://127.0.0.1:8000/users/create/{self.user}", json=user_data)
+            headers = {
+                'Authorization': f'Bearer {self.access_token}'
+            }
+            requests.post(f"http://127.0.0.1:8000/users/create/{self.user_id}", json=user_data, headers=headers)
             
         user = ft.Text(
-            value=self.user
+            value=self.user_id
         )
         username = ft.TextField(
             hint_text='Nome de Usuário'
